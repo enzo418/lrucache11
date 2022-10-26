@@ -1,2 +1,12 @@
-*.out
-sample_main
+*
+
+!include/
+!include/**/
+!tests/
+
+!*.cpp
+!*.hpp
+!.clang-format
+!.CMakeLists.txt
+!README.md
+!README.md
