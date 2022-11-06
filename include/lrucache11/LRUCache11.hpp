@@ -185,16 +185,11 @@ namespace lru11 {
         /**
          * @brief Finds a value and returns a copy of it if found.
          *
-         * @tparam F takes two arguments key of type Key and value of type
-         * Value, and returns true/false.
-         * @param p
+         * @param p predicate that returns true/false and takes two arguments
+         * key of type Key and value of type Value.
          * @return std::optional<Value>
          */
-        template <typename F>
-#if __cplusplus >= 202002L
-        requires CallableRboolAKeyValue<F, Key&, Value&> std::optional<Value>
-#endif
-        findCopy(const F& p) {
+        std::optional<Value> findCopy(std::function<bool(Key&, Value&)> p) {
             Guard g(lock_);
             auto found = std::find_if(
                 keys_.begin(), keys_.end(),
@@ -205,7 +200,8 @@ namespace lru11 {
         }
 #endif
 
-       protected : size_t prune() {
+       protected:
+        size_t prune() {
             size_t maxAllowed = maxSize_ + elasticity_;
             if (maxSize_ == 0 || cache_.size() < maxAllowed) {
                 return 0;
