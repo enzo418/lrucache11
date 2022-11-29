@@ -30,6 +30,7 @@
 #pragma once
 #include <algorithm>
 #include <cstdint>
+#include <functional>
 #include <list>
 #include <mutex>
 #include <optional>
