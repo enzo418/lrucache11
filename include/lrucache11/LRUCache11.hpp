@@ -197,7 +197,13 @@ namespace lru11 {
                 [&p](node_type& kv) { return p(kv.key, kv.value); });
 
             if (found == keys_.end()) return std::nullopt;
-            return getCopy(found->key);
+
+            const auto iter = cache_.find(found->key);
+            if (iter == cache_.end()) {
+                throw KeyNotFound();
+            }
+            keys_.splice(keys_.begin(), keys_, iter->second);
+            return iter->second->value;
         }
 #endif
 
